@@ -9,7 +9,6 @@ public class Cube {
 	private char[][] up;
 
 	public Cube() {
-
 	}
 
 	public Cube(char[][] back, char[][] down, char[][] front, char[][] left, char[][] right, char[][] up) {

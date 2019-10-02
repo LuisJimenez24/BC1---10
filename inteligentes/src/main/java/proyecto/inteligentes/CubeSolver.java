@@ -14,9 +14,12 @@ public class CubeSolver {
 	public static void main(String[] args) throws ParseException {
 
 		final JSONObject cubo = fileReader();
-		Cube cube = new Cube(divider(cubo.get("BACK").toString().toCharArray()),
-				divider(cubo.get("DOWN").toString().toCharArray()), divider(cubo.get("FRONT").toString().toCharArray()),
-				divider(cubo.get("LEFT").toString().toCharArray()), divider(cubo.get("RIGHT").toString().toCharArray()),
+		Cube cube = new Cube(
+				divider(cubo.get("BACK").toString().toCharArray()),
+				divider(cubo.get("DOWN").toString().toCharArray()), 
+				divider(cubo.get("FRONT").toString().toCharArray()),
+				divider(cubo.get("LEFT").toString().toCharArray()), 
+				divider(cubo.get("RIGHT").toString().toCharArray()),
 				divider(cubo.get("UP").toString().toCharArray()));
 		System.out.println ("MD5 "+md5Generator("Hola"));
 	}
