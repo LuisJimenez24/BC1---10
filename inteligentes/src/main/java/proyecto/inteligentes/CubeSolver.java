@@ -14,14 +14,31 @@ public class CubeSolver {
 	public static void main(String[] args) throws ParseException {
 
 		final JSONObject cubo = fileReader();
+		int dimensiones = getDimensions(cubo.get("BACK").toString().toCharArray());
 		Cube cube = new Cube(
-				divider(cubo.get("BACK").toString().toCharArray()),
-				divider(cubo.get("DOWN").toString().toCharArray()), 
-				divider(cubo.get("FRONT").toString().toCharArray()),
-				divider(cubo.get("LEFT").toString().toCharArray()), 
-				divider(cubo.get("RIGHT").toString().toCharArray()),
-				divider(cubo.get("UP").toString().toCharArray()));
-		System.out.println ("MD5 "+md5Generator("Hola"));
+				divider(cubo.get("BACK").toString().toCharArray(), dimensiones),
+				divider(cubo.get("DOWN").toString().toCharArray(), dimensiones), 
+				divider(cubo.get("FRONT").toString().toCharArray(), dimensiones),
+				divider(cubo.get("LEFT").toString().toCharArray(), dimensiones), 
+				divider(cubo.get("RIGHT").toString().toCharArray(), dimensiones),
+				divider(cubo.get("UP").toString().toCharArray(), dimensiones));
+		//System.out.println ("MD5 "+md5Generator("Hola"));
+		Cube pruebaMov = movL0(cube, dimensiones);
+
+	}
+	private static Cube movL0(Cube cube, int dimensiones) {
+		Cube newCubo = new Cube();
+		char [][] front = cube.getFront();
+		char [][] down = cube.getDown();
+		char [][] back = cube.getBack();
+		char [][] backCopy = cube.getBack();
+		char [][] up = cube.getUp();
+		for (int i = 0; i<dimensiones; i++) {
+			down[i][0] = front [i][0];
+			back[i][0] = backCopy [i][0];
+		}
+		
+		return newCubo;
 	}
 
 	private static JSONObject fileReader() throws ParseException {
@@ -37,24 +54,7 @@ public class CubeSolver {
 		return initCube;
 	}
 
-	private static char[][] divider(char[] face) {
-		/*
-		 * Método para guardar cada número del archivo JSON en una coordinada de la matriz
-		 */
-		int nCounter = 0;
-		for (char c : face) {
-			if (c == '[' || c == ']' || c == ',') {
-			}else {
-				++nCounter; //Variable que guarda cuántos números hay guardados
-			}
-		}
-		int dimensions = 0;
-		for(int i = 1; i<255 ; i++) {
-			if((i * i) == nCounter) {
-				dimensions = i; //Variable que calcula la potencia de la dimensión del cubo
-				break;
-			}
-		}
+	private static char[][] divider(char[] face, int dimensions) {
 		char[][] result = new char[dimensions][dimensions];
 		int x = 0;
 		for (int i = 1; i < face.length - 1; i++) {
@@ -72,6 +72,27 @@ public class CubeSolver {
 			}
 		}
 		return result;
+	}
+	
+	private static int getDimensions(char[] faces) {
+		/*
+		 * Método para guardar cada número del archivo JSON en una coordinada de la matriz
+		 */
+		int nCounter = 0;
+		for (char c : faces) {
+			if (c == '[' || c == ']' || c == ',') {
+			}else {
+				++nCounter; //Variable que guarda cuántos números hay guardados
+			}
+		}
+		int dimensions = 0;
+		for(int i = 1; i<255 ; i++) {
+			if((i * i) == nCounter) {
+				dimensions = i; //Variable que calcula la potencia de la dimensión del cubo
+				break;
+			}
+		}
+		return dimensions;
 	}
 
 	private static String md5Generator(String input) {
